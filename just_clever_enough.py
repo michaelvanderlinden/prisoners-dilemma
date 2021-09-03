@@ -1,5 +1,18 @@
 import numpy
 
+# This strategy:
+# 1) Plays tit-for-tat (never defects first).
+# 2) Detects "deadlocks" of DD,DD or DC,CD and attempts to break out of them by turning the other cheek.
+#       Only a couple times though; it stops trying if the opponent repeatedly fails to accept the peace offering.
+# 3) Cautiously detects "randos" (opponent flipping a coin for each move) and exploits them through straight Ds.
+#       Even with just a handful of randos in the pool, the score boost is substantial (in the end, there were about 10).
+#       The random detector is intentionally conservative (opponent has to be super chaotic over 30 rounds to trigger),
+#       and it will still revert to normal play if it detects a deadlock against a supposed rando.
+#       False positive is worse than false negative.
+
+# This strategy came in second out of 1600, and evidence suggests that the winning strategy was almost identical,
+# but with a slightly more aggressive random detector.
+
 # responded_in_kind counts the number of times the opponent responded like a good TFT
 def responded_in_kind(hist):
 	opp_tft_responses = 0
